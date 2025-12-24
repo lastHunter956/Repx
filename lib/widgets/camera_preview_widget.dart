@@ -16,6 +16,10 @@ class CameraPreviewWidget extends StatelessWidget {
   final bool showSkeleton;
   final bool showAngles;
   final bool showQualityBar;
+  
+  /// Aspect ratio de la imagen de la cámara (width/height)
+  /// Usado para compensar diferencias de aspect ratio en la transformación de skeleton
+  final double? cameraAspectRatio;
 
   const CameraPreviewWidget({
     super.key,
@@ -26,6 +30,7 @@ class CameraPreviewWidget extends StatelessWidget {
     this.showSkeleton = true,
     this.showAngles = true,
     this.showQualityBar = true,
+    this.cameraAspectRatio,
   });
 
   @override
@@ -41,38 +46,51 @@ class CameraPreviewWidget extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Vista previa de cámara
-          CameraPreview(controller!),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // Calcular aspect ratios para compensación en transformación
+          final previewSize = controller!.value.previewSize;
+          final cameraAspect = previewSize != null 
+              ? previewSize.height / previewSize.width  // Rotado para landscape
+              : 4.0 / 3.0;  // Default 4:3
+          final screenAspect = constraints.maxWidth / constraints.maxHeight;
+          
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              // Vista previa de cámara (llena todo el espacio)
+              CameraPreview(controller!),
 
-          // Overlay de skeleton y pose - SIEMPRE dibujar si hay pose
-          if (currentPose != null)
-            RepaintBoundary(
-              child: CustomPaint(
-                painter: _PoseOverlayPainter(
-                  pose: currentPose!,
-                  angles: angles,
-                  formQuality: formQuality,
-                  showAngles: showAngles && showSkeleton,
-                  showQualityBar: showQualityBar,
-                  showSkeleton: showSkeleton,
+              // Overlay de skeleton y pose
+              if (currentPose != null)
+                RepaintBoundary(
+                  child: CustomPaint(
+                    painter: _PoseOverlayPainter(
+                      pose: currentPose!,
+                      angles: angles,
+                      formQuality: formQuality,
+                      showAngles: showAngles && showSkeleton,
+                      showQualityBar: showQualityBar,
+                      showSkeleton: showSkeleton,
+                      cameraAspectRatio: cameraAspect,
+                      screenAspectRatio: screenAspect,
+                    ),
+                  ),
+                ),
+
+              // Marco decorativo
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: DrawingUtils.accentColor.withOpacity(0.5),
+                    width: 3,
+                  ),
                 ),
               ),
-            ),
-
-          // Marco decorativo
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: DrawingUtils.accentColor.withOpacity(0.5),
-                width: 3,
-              ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
@@ -86,6 +104,8 @@ class _PoseOverlayPainter extends CustomPainter {
   final bool showAngles;
   final bool showQualityBar;
   final bool showSkeleton;
+  final double? cameraAspectRatio;
+  final double? screenAspectRatio;
 
   _PoseOverlayPainter({
     required this.pose,
@@ -94,6 +114,8 @@ class _PoseOverlayPainter extends CustomPainter {
     this.showAngles = true,
     this.showQualityBar = true,
     this.showSkeleton = true,
+    this.cameraAspectRatio,
+    this.screenAspectRatio,
   });
 
   @override
@@ -115,6 +137,8 @@ class _PoseOverlayPainter extends CustomPainter {
         pose,
         showCorrectForm: true,
         angles: angles,
+        cameraAspectRatio: cameraAspectRatio,
+        screenAspectRatio: screenAspectRatio,
       );
     }
 
@@ -134,9 +158,15 @@ class _PoseOverlayPainter extends CustomPainter {
     final displayWidth = size.width;
     final displayHeight = size.height;
 
-    // Usar helper público para transformar coordenadas (consistente)
+    // Usar helper público para transformar coordenadas (consistente con aspect ratio)
     Offset transformPoint(PoseKeypoint point) =>
-        DrawingUtils.transformCoordinate(point, displayWidth, displayHeight);
+        DrawingUtils.transformCoordinate(
+          point, 
+          displayWidth, 
+          displayHeight,
+          cameraAspectRatio: cameraAspectRatio,
+          screenAspectRatio: screenAspectRatio,
+        );
 
     // Ángulo de codo izquierdo
     final leftElbow = pose.getKeypoint('left_elbow');
@@ -175,7 +205,9 @@ class _PoseOverlayPainter extends CustomPainter {
         angles != oldDelegate.angles ||
         formQuality != oldDelegate.formQuality ||
         showAngles != oldDelegate.showAngles ||
-        showQualityBar != oldDelegate.showQualityBar;
+        showQualityBar != oldDelegate.showQualityBar ||
+        cameraAspectRatio != oldDelegate.cameraAspectRatio ||
+        screenAspectRatio != oldDelegate.screenAspectRatio;
   }
 }
 

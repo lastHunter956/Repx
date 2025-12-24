@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:camera/camera.dart';
 import '../../utils/app_colors.dart';
 import '../../models/fitness_test/fitness_test_state.dart';
+import '../../models/pose_keypoint.dart';
 import '../../services/fitness_test/fitness_test_controller.dart';
 import '../../widgets/camera_preview_widget.dart';
 
@@ -130,11 +131,14 @@ class _FitnessExerciseScreenState extends State<FitnessExerciseScreen>
           return Stack(
             fit: StackFit.expand,
             children: [
-              // Camera preview de fondo
+              // Camera preview de fondo (SIN skeleton overlay)
               _buildCameraPreview(controller),
 
               // Overlay superior con timer y título
               _buildTopOverlay(controller),
+
+              // Mini vista del skeleton (debajo del timer)
+              _buildSkeletonMiniPreview(controller),
 
               // Panel de estadísticas
               _buildStatsPanel(controller),
@@ -162,14 +166,60 @@ class _FitnessExerciseScreenState extends State<FitnessExerciseScreen>
       );
     }
 
+    // Calcular aspect ratio de la cámara (después de rotar para landscape)
+    // La cámara captura en portrait, así que el aspect ratio real es height/width
+    final cameraValue = _cameraController!.value;
+    final cameraAspectRatio = cameraValue.previewSize != null
+        ? cameraValue.previewSize!.height / cameraValue.previewSize!.width
+        : null;
+
     return CameraPreviewWidget(
       controller: _cameraController,
-      currentPose: controller.currentPose,
+      currentPose: null, // No mostrar skeleton aquí
       angles: const {},
       formQuality: controller.counterEngine.currentQuality,
-      showSkeleton: true,
+      showSkeleton: false, // Skeleton deshabilitado en la cámara
       showAngles: false,
       showQualityBar: false,
+    );
+  }
+
+  /// Mini preview del skeleton en un contenedor fijo
+  Widget _buildSkeletonMiniPreview(FitnessTestController controller) {
+    return Positioned(
+      top: 0,
+      bottom: 0,
+      left: 16,
+      child: Center(
+        child: Container(
+          width: 90,
+          height: 120,
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.75),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: AppColors.primaryCyan.withOpacity(0.5),
+              width: 1.5,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(6),
+            child: controller.currentPose != null
+                ? CustomPaint(
+                    painter: _SkeletonMiniPainter(
+                      pose: controller.currentPose!,
+                    ),
+                  )
+                : Center(
+                    child: Icon(
+                      Icons.accessibility_new,
+                      color: AppColors.primaryCyan.withOpacity(0.4),
+                      size: 32,
+                    ),
+                  ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -411,3 +461,136 @@ class _FitnessExerciseScreenState extends State<FitnessExerciseScreen>
   }
 }
 
+/// Painter para el mini preview del skeleton
+/// Dibuja el skeleton en un contenedor fijo sin depender de la cámara
+class _SkeletonMiniPainter extends CustomPainter {
+  final PoseDetection pose;
+
+  _SkeletonMiniPainter({required this.pose});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppColors.primaryCyan
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    // Detectar si el cuerpo está horizontal (flexión) o vertical (de pie)
+    final leftShoulder = pose.getKeypoint('left_shoulder');
+    final rightHip = pose.getKeypoint('right_hip');
+    
+    bool isHorizontal = false;
+    if (leftShoulder != null && rightHip != null && 
+        leftShoulder.isValid && rightHip.isValid) {
+      final dx = (leftShoulder.y - rightHip.y).abs();
+      final dy = (leftShoulder.x - rightHip.x).abs();
+      isHorizontal = dx > dy * 1.5;
+    }
+
+    // Calcular bounds del skeleton para centrar
+    double minX = 1.0, maxX = 0.0, minY = 1.0, maxY = 0.0;
+    int validCount = 0;
+    for (final kp in pose.keypoints) {
+      if (kp.isValid && kp.confidence > 0.3) {
+        double kpX, kpY;
+        if (isHorizontal) {
+          kpX = 1.0 - kp.x;
+          kpY = kp.y;
+        } else {
+          kpX = kp.y;
+          kpY = kp.x;
+        }
+        minX = minX < kpX ? minX : kpX;
+        maxX = maxX > kpX ? maxX : kpX;
+        minY = minY < kpY ? minY : kpY;
+        maxY = maxY > kpY ? maxY : kpY;
+        validCount++;
+      }
+    }
+
+    if (validCount < 3) return; // No dibujar si hay muy pocos puntos
+
+    // Calcular centro y escala para centrar el skeleton
+    final centerX = (minX + maxX) / 2;
+    final centerY = (minY + maxY) / 2;
+    final rangeX = (maxX - minX).clamp(0.3, 1.0); // Mínimo 30% para evitar zoom excesivo
+    final rangeY = (maxY - minY).clamp(0.3, 1.0);
+    
+    // Escala uniforme para mantener proporciones
+    final scale = 0.85 / (rangeX > rangeY ? rangeX : rangeY);
+    
+    Offset transform(PoseKeypoint kp) {
+      double rawX, rawY;
+      
+      if (isHorizontal) {
+        rawX = 1.0 - kp.x;
+        rawY = kp.y;
+      } else {
+        rawX = kp.y;
+        rawY = kp.x;
+      }
+      
+      // Centrar y escalar
+      final x = ((rawX - centerX) * scale + 0.5) * size.width;
+      final y = ((rawY - centerY) * scale + 0.5) * size.height;
+      
+      return Offset(
+        x.clamp(0, size.width),
+        y.clamp(0, size.height),
+      );
+    }
+
+    // Conexiones del skeleton
+    final connections = [
+      ['left_shoulder', 'right_shoulder'],
+      ['left_shoulder', 'left_elbow'],
+      ['left_elbow', 'left_wrist'],
+      ['right_shoulder', 'right_elbow'],
+      ['right_elbow', 'right_wrist'],
+      ['left_shoulder', 'left_hip'],
+      ['right_shoulder', 'right_hip'],
+      ['left_hip', 'right_hip'],
+      ['left_hip', 'left_knee'],
+      ['left_knee', 'left_ankle'],
+      ['right_hip', 'right_knee'],
+      ['right_knee', 'right_ankle'],
+    ];
+
+    // Dibujar conexiones
+    for (final conn in connections) {
+      final p1 = pose.getKeypoint(conn[0]);
+      final p2 = pose.getKeypoint(conn[1]);
+      if (p1 != null && p2 != null && p1.isValid && p2.isValid) {
+        canvas.drawLine(transform(p1), transform(p2), paint);
+      }
+    }
+
+    // Dibujar puntos de articulaciones
+    final jointPaint = Paint()
+      ..color = AppColors.successGreen
+      ..style = PaintingStyle.fill;
+
+    for (final kp in pose.keypoints) {
+      if (kp.isValid && kp.confidence > 0.3) {
+        final pos = transform(kp);
+        canvas.drawCircle(pos, 3, jointPaint);
+      }
+    }
+
+    // Dibujar cabeza
+    final nose = pose.getKeypoint('nose');
+    if (nose != null && nose.isValid) {
+      final headPaint = Paint()
+        ..color = AppColors.primaryCyan
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5;
+      canvas.drawCircle(transform(nose), 8, headPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_SkeletonMiniPainter oldDelegate) {
+    return pose != oldDelegate.pose;
+  }
+}

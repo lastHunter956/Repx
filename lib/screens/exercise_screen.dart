@@ -231,17 +231,26 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(24),
                         child: Consumer<SettingsService>(
-                          builder: (context, settings, _) =>
-                              CameraPreviewWidget(
-                            controller:
-                                _exerciseService?.cameraService.controller,
-                            currentPose: counter.currentPose,
-                            angles: counter.angles,
-                            formQuality: counter.formQuality,
-                            showSkeleton: settings.showSkeleton,
-                            showAngles: settings.showAngles,
-                            showQualityBar: settings.showQualityBar,
-                          ),
+                          builder: (context, settings, _) {
+                            // Calcular aspect ratio de la cámara
+                            final controller = _exerciseService?.cameraService.controller;
+                            final cameraAspectRatio = controller != null && 
+                                controller.value.isInitialized &&
+                                controller.value.previewSize != null
+                                ? controller.value.previewSize!.height / controller.value.previewSize!.width
+                                : null;
+                            
+                            return CameraPreviewWidget(
+                              controller: controller,
+                              currentPose: counter.currentPose,
+                              angles: counter.angles,
+                              formQuality: counter.formQuality,
+                              showSkeleton: settings.showSkeleton,
+                              showAngles: settings.showAngles,
+                              showQualityBar: settings.showQualityBar,
+                              cameraAspectRatio: cameraAspectRatio,
+                            );
+                          },
                         ),
                       ),
 

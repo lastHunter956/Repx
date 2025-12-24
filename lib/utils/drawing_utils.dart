@@ -20,6 +20,8 @@ class DrawingUtils {
     PoseDetection pose, {
     bool showCorrectForm = true,
     Map<String, double>? angles,
+    double? cameraAspectRatio,
+    double? screenAspectRatio,
   }) {
     // Contar keypoints válidos (umbral ligeramente permisivo)
     final validKeypoints = pose.keypoints.where((k) => k.isValid).toList();
@@ -36,7 +38,13 @@ class DrawingUtils {
       // Dibujar puntos sueltos (poca opacidad) para dar feedback visual
       final paintFallback = Paint()..style = PaintingStyle.fill;
       for (final keypoint in fallback) {
-        final p = transformCoordinate(keypoint, size.width, size.height);
+        final p = transformCoordinate(
+          keypoint, 
+          size.width, 
+          size.height,
+          cameraAspectRatio: cameraAspectRatio,
+          screenAspectRatio: screenAspectRatio,
+        );
         paintFallback.color = AppColors.primaryCyan.withOpacity(0.25);
         canvas.drawCircle(p, 6.0, paintFallback);
       }
@@ -50,9 +58,10 @@ class DrawingUtils {
     //   - MediaPipe: coordenadas (0,0) = top-left de imagen capturada
     //   - Canvas: necesita rotar -90° para vista landscape
     //
-    // MATRIZ DE TRANSFORMACIÓN (SIN ESPEJO):
+    // MATRIZ DE TRANSFORMACIÓN (CON ESPEJO para cámara frontal):
     //   1. Rotar -90° (counterclockwise) → swapea X,Y
-    //   Resultado: (x', y') = (size.height * y, size.width * x)
+    //   2. Espejo horizontal → invierte X
+    //   3. Compensar aspect ratio → ajustar por diferencia de ratios
     canvas.save();
 
     // NO aplicar transformaciones canvas (causan pérdida de precisión)
@@ -68,9 +77,15 @@ class DrawingUtils {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    // 🎯 FUNCIÓN DE TRANSFORMACIÓN PIXEL-PERFECT (ahora pública via helper)
+    // 🎯 FUNCIÓN DE TRANSFORMACIÓN PIXEL-PERFECT (ahora con aspect ratio)
     Offset transformPoint(PoseKeypoint point) =>
-        transformCoordinate(point, displayWidth, displayHeight);
+        transformCoordinate(
+          point, 
+          displayWidth, 
+          displayHeight,
+          cameraAspectRatio: cameraAspectRatio,
+          screenAspectRatio: screenAspectRatio,
+        );
 
     // Definir conexiones del skeleton completo - MUÑECO DE PALITOS
     final connections = [
@@ -145,10 +160,10 @@ class DrawingUtils {
     }
 
     // Dibujar CABEZA como círculo
-    _drawHead(canvas, size, pose);
+    _drawHead(canvas, size, pose, cameraAspectRatio: cameraAspectRatio, screenAspectRatio: screenAspectRatio);
 
     // Dibujar keypoints (articulaciones)
-    _drawKeypoints(canvas, size, pose, showCorrectForm, angles);
+    _drawKeypoints(canvas, size, pose, showCorrectForm, angles, cameraAspectRatio: cameraAspectRatio, screenAspectRatio: screenAspectRatio);
 
     // ✅ RESTAURAR canvas a estado original
     canvas.restore();
@@ -158,8 +173,10 @@ class DrawingUtils {
   static void _drawHead(
     Canvas canvas,
     Size size,
-    PoseDetection pose,
-  ) {
+    PoseDetection pose, {
+    double? cameraAspectRatio,
+    double? screenAspectRatio,
+  }) {
     final nose = pose.getKeypoint('nose');
     final leftEye = pose.getKeypoint('left_eye');
     final rightEye = pose.getKeypoint('right_eye');
@@ -179,7 +196,13 @@ class DrawingUtils {
       final displayHeight = size.height;
 
       Offset transformPoint(PoseKeypoint point) =>
-          transformCoordinate(point, displayWidth, displayHeight);
+          transformCoordinate(
+            point, 
+            displayWidth, 
+            displayHeight,
+            cameraAspectRatio: cameraAspectRatio,
+            screenAspectRatio: screenAspectRatio,
+          );
 
       final nosePos = transformPoint(nose);
       final leftEyePos = transformPoint(leftEye);
@@ -217,8 +240,10 @@ class DrawingUtils {
     Size size,
     PoseDetection pose,
     bool showCorrectForm,
-    Map<String, double>? angles,
-  ) {
+    Map<String, double>? angles, {
+    double? cameraAspectRatio,
+    double? screenAspectRatio,
+  }) {
     final paint = Paint()..style = PaintingStyle.fill;
 
     // 🎯 Función de transformación local (consistente con drawSkeleton)
@@ -226,7 +251,13 @@ class DrawingUtils {
     final displayHeight = size.height;
 
     Offset transformPoint(PoseKeypoint point) =>
-        transformCoordinate(point, displayWidth, displayHeight);
+        transformCoordinate(
+          point, 
+          displayWidth, 
+          displayHeight,
+          cameraAspectRatio: cameraAspectRatio,
+          screenAspectRatio: screenAspectRatio,
+        );
 
     // Solo dibujar articulaciones principales (no todos los keypoints)
     final mainJoints = [
@@ -405,12 +436,17 @@ class DrawingUtils {
   /// 🎯 MÉTODO HELPER PÚBLICO: Transformación de coordenadas MediaPipe → Canvas
   ///
   /// Convierte coordenadas normalizadas (0-1) de MediaPipe a coordenadas de canvas
-  /// teniendo en cuenta la rotación de cámara frontal en landscape (270°).
+  /// teniendo en cuenta:
+  /// - Rotación de cámara frontal en landscape (270°)
+  /// - Diferencia de aspect ratio entre cámara y canvas (crop/fill)
+  /// - Efecto espejo para cámara frontal (movimiento natural)
   ///
   /// Parámetros:
   /// - [keypoint]: PoseKeypoint con coordenadas normalizadas (x,y ∈ [0,1])
   /// - [canvasWidth]: Ancho del canvas de dibujo
   /// - [canvasHeight]: Alto del canvas de dibujo
+  /// - [cameraAspectRatio]: Aspect ratio de la imagen de cámara (opcional)
+  /// - [isFrontCamera]: Si es cámara frontal, aplica mirror (default: true)
   ///
   /// Retorna: Offset con coordenadas transformadas listas para dibujar
   ///
@@ -419,24 +455,64 @@ class DrawingUtils {
   /// final screenPos = DrawingUtils.transformCoordinate(
   ///   leftElbow,
   ///   size.width,
-  ///   size.height
+  ///   size.height,
+  ///   cameraAspectRatio: 4/3,
   /// );
   /// canvas.drawCircle(screenPos, 10, paint);
   /// ```
   static Offset transformCoordinate(
     PoseKeypoint keypoint,
     double canvasWidth,
-    double canvasHeight,
-  ) {
-    // ✅ CORREGIDO: Transformación para landscape frontal SIN ESPEJO
-    // Solo rotar -90° (counterclockwise) para que skeleton coincida con usuario
-    //   x_display = height * y_mediapipe         [rotar -90°]
-    //   y_display = width * x_mediapipe          [rotar -90°]
-    //
-    // ANTES: Tenía (1 - y) que causaba inversión horizontal (efecto espejo)
-    final x = canvasHeight * keypoint.y; // SIN inversión
-    final y = canvasWidth * keypoint.x;
-    return Offset(x, y);
+    double canvasHeight, {
+    double? cameraAspectRatio,
+    double? screenAspectRatio,
+    bool isFrontCamera = true,
+  }) {
+    // ═══════════════════════════════════════════════════════════════════
+    // PASO 1: Rotar -90° para landscape (swap X,Y)
+    // MediaPipe retorna coordenadas en orientación portrait
+    // Canvas está en landscape, necesitamos rotar
+    // ═══════════════════════════════════════════════════════════════════
+    double rotatedX = keypoint.y;
+    double rotatedY = keypoint.x;
+
+    // NOTA: NO aplicar espejo aquí porque CameraPreview de Flutter
+    // ya maneja el mirroring automáticamente para cámara frontal
+
+    // ═══════════════════════════════════════════════════════════════════
+    // PASO 2: Compensar estiramiento de la imagen
+    // CameraPreview estira la imagen para llenar el espacio
+    // Necesitamos compensar este estiramiento para alinear el skeleton
+    // ═══════════════════════════════════════════════════════════════════
+    double adjustedX = rotatedX;
+    double adjustedY = rotatedY;
+
+    if (cameraAspectRatio != null && screenAspectRatio != null) {
+      // Calcular cuánto se estira la imagen en cada eje
+      if (screenAspectRatio > cameraAspectRatio) {
+        // Pantalla más ancha que cámara: se estira horizontalmente
+        // La imagen de cámara se escala para llenar el ancho
+        // Esto significa que verticalmente hay recorte
+        final scale = screenAspectRatio / cameraAspectRatio;
+        final offset = (1.0 - 1.0 / scale) / 2.0;
+        adjustedY = offset + (rotatedY / scale);
+      } else if (screenAspectRatio < cameraAspectRatio) {
+        // Pantalla más alta que cámara: se estira verticalmente  
+        // La imagen de cámara se escala para llenar el alto
+        // Esto significa que horizontalmente hay recorte
+        final scale = cameraAspectRatio / screenAspectRatio;
+        final offset = (1.0 - 1.0 / scale) / 2.0;
+        adjustedX = offset + (rotatedX / scale);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // PASO 3: Escalar a coordenadas de canvas
+    // ═══════════════════════════════════════════════════════════════════
+    final finalX = adjustedX.clamp(0.0, 1.0) * canvasWidth;
+    final finalY = adjustedY.clamp(0.0, 1.0) * canvasHeight;
+
+    return Offset(finalX, finalY);
   }
 
   /// Dibuja una barra de progreso de calidad
