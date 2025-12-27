@@ -4,6 +4,7 @@ import '../models/exercise_type.dart';
 import '../utils/app_colors.dart';
 import 'exercise_screen.dart';
 import 'pullup_calibration_screen.dart';
+import 'personalized_training_screen.dart';
 
 /// Pantalla de selección de ejercicio
 class ExerciseSelectionScreen extends StatelessWidget {
@@ -71,12 +72,14 @@ class ExerciseSelectionScreen extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  child: ListView(
+                    padding: const EdgeInsets.only(bottom: 24),
                     children: [
+                      const SizedBox(height: 24),
                       _buildExerciseCard(
                         context,
-                        ExerciseType.pushUps,
+                        ExerciseType.pushUps.getDisplayName(context),
+                        ExerciseType.pushUps.getSubtitle(context),
                         Icons.fitness_center_rounded,
                         AppColors.primaryCyan,
                         () {
@@ -91,7 +94,8 @@ class ExerciseSelectionScreen extends StatelessWidget {
                       const SizedBox(height: 24),
                       _buildExerciseCard(
                         context,
-                        ExerciseType.pullUps,
+                        ExerciseType.pullUps.getDisplayName(context),
+                        ExerciseType.pullUps.getSubtitle(context),
                         Icons.accessibility_new_rounded,
                         AppColors.primaryPurple,
                         () {
@@ -100,6 +104,23 @@ class ExerciseSelectionScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) =>
                                   const PullUpCalibrationScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 24),
+                      _buildExerciseCard(
+                        context,
+                        AppLocalizations.of(context)!.personalizedTraining,
+                        AppLocalizations.of(context)!.personalizedTrainingDesc,
+                        Icons.menu_book_rounded,
+                        Colors.blueAccent,
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const PersonalizedTrainingScreen(),
                             ),
                           );
                         },
@@ -117,7 +138,8 @@ class ExerciseSelectionScreen extends StatelessWidget {
 
   Widget _buildExerciseCard(
     BuildContext context,
-    ExerciseType type,
+    String title,
+    String subtitle,
     IconData icon,
     Color accentColor,
     VoidCallback onTap,
@@ -158,7 +180,8 @@ class ExerciseSelectionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              type.getDisplayName(context),
+              title,
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w900,
@@ -168,7 +191,8 @@ class ExerciseSelectionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              type.getSubtitle(context),
+              subtitle,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
@@ -214,4 +238,3 @@ class ExerciseSelectionScreen extends StatelessWidget {
     );
   }
 }
-

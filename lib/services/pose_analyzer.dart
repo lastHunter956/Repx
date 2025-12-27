@@ -61,8 +61,9 @@ class PoseAnalyzer {
       // ignore: avoid_print
       if (isUp) print('PoseAnalyzer: ARRIBA (${avgElbow.toStringAsFixed(1)}°)');
       // ignore: avoid_print
-      if (isDown)
+      if (isDown) {
         print('PoseAnalyzer: ABAJO (${avgElbow.toStringAsFixed(1)}°)');
+      }
     }
 
     // Validar pose según posición

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:REPX/l10n/app_localizations.dart';
 import '../../utils/app_colors.dart';
-import '../../models/fitness_test/fitness_test_state.dart';
 
 /// Pantalla de receso/descanso entre ejercicios
 class RestScreen extends StatelessWidget {

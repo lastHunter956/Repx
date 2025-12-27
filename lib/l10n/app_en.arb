@@ -189,5 +189,7 @@
   "goodStatus": "Good",
   
   "squats": "Squats",
-  "abdominals": "Crunches"
+  "abdominals": "Crunches",
+  "personalizedTraining": "Personalized Training",
+  "personalizedTrainingDesc": "Find exercises for specific muscles"
 }

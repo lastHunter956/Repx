@@ -77,7 +77,7 @@ class _PremiumPullUpProgressBarState extends State<PremiumPullUpProgressBar>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 320,
       height: 480,
       child: CustomPaint(

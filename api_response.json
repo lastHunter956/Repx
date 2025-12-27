@@ -1,0 +1,88 @@
+﻿{
+    "total":  1734,
+    "limit":  20,
+    "offset":  0,
+    "count":  20,
+    "results":  [
+                    {
+                        "id":  0,
+                        "name":  "Barbell Curl"
+                    },
+                    {
+                        "id":  1,
+                        "name":  "Dumbbell Curl"
+                    },
+                    {
+                        "id":  2,
+                        "name":  "Dumbbell Hammer Curl"
+                    },
+                    {
+                        "id":  3,
+                        "name":  "Barbell Bench Press"
+                    },
+                    {
+                        "id":  4,
+                        "name":  "Box Dips"
+                    },
+                    {
+                        "id":  5,
+                        "name":  "Dumbbell Incline Chest Flys"
+                    },
+                    {
+                        "id":  6,
+                        "name":  "Barbell Squat"
+                    },
+                    {
+                        "id":  7,
+                        "name":  "Machine Leg Press"
+                    },
+                    {
+                        "id":  8,
+                        "name":  "Machine Leg Extension"
+                    },
+                    {
+                        "id":  9,
+                        "name":  "Dumbbell Goblet Squat"
+                    },
+                    {
+                        "id":  10,
+                        "name":  "Dumbbell Seated Shrug"
+                    },
+                    {
+                        "id":  11,
+                        "name":  "Dumbbell Seated Overhead Tricep Extension"
+                    },
+                    {
+                        "id":  12,
+                        "name":  "Machine Cable V Bar Push Downs"
+                    },
+                    {
+                        "id":  13,
+                        "name":  "Bench Dips"
+                    },
+                    {
+                        "id":  14,
+                        "name":  "Dumbbell Lateral Raise"
+                    },
+                    {
+                        "id":  15,
+                        "name":  "Dumbbell Rear Delt Fly"
+                    },
+                    {
+                        "id":  16,
+                        "name":  "Cable Rope Face Pulls"
+                    },
+                    {
+                        "id":  17,
+                        "name":  "Machine Pulldown"
+                    },
+                    {
+                        "id":  18,
+                        "name":  "Machine Seated Cable Row"
+                    },
+                    {
+                        "id":  19,
+                        "name":  "Pull Ups"
+                    }
+                ]
+}

@@ -1081,6 +1081,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Abdominales'**
   String get abdominals;
+
+  /// No description provided for @personalizedTraining.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrenamiento Personalizado'**
+  String get personalizedTraining;
+
+  /// No description provided for @personalizedTrainingDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Encuentra ejercicios para músculos específicos'**
+  String get personalizedTrainingDesc;
 }
 
 class _AppLocalizationsDelegate

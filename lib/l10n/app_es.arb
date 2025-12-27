@@ -189,5 +189,7 @@
   "goodStatus": "Bien",
   
   "squats": "Sentadillas",
-  "abdominals": "Abdominales"
+  "abdominals": "Abdominales",
+  "personalizedTraining": "Entrenamiento Personalizado",
+  "personalizedTrainingDesc": "Encuentra ejercicios para músculos específicos"
 }

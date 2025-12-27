@@ -502,4 +502,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get abdominals => 'Crunches';
+
+  @override
+  String get personalizedTraining => 'Personalized Training';
+
+  @override
+  String get personalizedTrainingDesc => 'Find exercises for specific muscles';
 }

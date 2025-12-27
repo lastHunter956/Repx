@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late AnimationController _entranceController;
   late AnimationController _floatController;
   late AnimationController _particlesController;
-  
+
   // Animaciones
   late Animation<double> _orbScale;
   late Animation<double> _orbGlow;
@@ -164,31 +164,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           SizedBox(height: isSmallScreen ? 20 : 40),
-                          
+
                           // Hero Section con Orbe animado
                           _buildHeroSection(l10n, isSmallScreen),
-                          
+
                           SizedBox(height: isSmallScreen ? 30 : 50),
-                          
+
                           // Botón principal START
                           _buildAnimatedEntrance(
                             delay: 0.2,
                             child: _buildPremiumStartButton(context, l10n),
                           ),
-                          
+
                           SizedBox(height: isSmallScreen ? 24 : 40),
-                          
+
                           // Sección de acciones rápidas
                           _buildActionsSection(context, l10n, isSmallScreen),
-                          
+
                           SizedBox(height: isSmallScreen ? 16 : 24),
-                          
+
                           // Footer elegante
                           _buildAnimatedEntrance(
                             delay: 0.8,
                             child: _buildPremiumFooter(l10n),
                           ),
-                          
+
                           const SizedBox(height: 20),
                         ],
                       ),
@@ -216,9 +216,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               return _buildFloatingOrb(isSmallScreen);
             },
           ),
-          
+
           SizedBox(height: isSmallScreen ? 30 : 45),
-          
+
           // Título con efecto gradiente
           ShaderMask(
             shaderCallback: (bounds) => LinearGradient(
@@ -240,9 +240,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             ),
           ),
-          
+
           const SizedBox(height: 6),
-          
+
           // Subtítulo elegante
           Text(
             'COUNTER',
@@ -253,9 +253,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               letterSpacing: 14,
             ),
           ),
-          
+
           SizedBox(height: isSmallScreen ? 16 : 24),
-          
+
           // Badge AI-Powered
           _buildAIBadge(l10n),
         ],
@@ -266,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   /// Orbe flotante con efecto 3D y múltiples capas de brillo
   Widget _buildFloatingOrb(bool isSmallScreen) {
     final orbSize = isSmallScreen ? 100.0 : 120.0;
-    
+
     return Transform.scale(
       scale: _orbScale.value,
       child: Container(
@@ -310,7 +310,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.primaryCyan.withOpacity(_orbGlow.value * 0.5),
+                  color:
+                      AppColors.primaryCyan.withOpacity(_orbGlow.value * 0.5),
                   blurRadius: 20,
                   spreadRadius: 2,
                 ),
@@ -438,7 +439,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   /// Sección de acciones rápidas con cards glassmorphism
-  Widget _buildActionsSection(BuildContext context, AppLocalizations l10n, bool isSmallScreen) {
+  Widget _buildActionsSection(
+      BuildContext context, AppLocalizations l10n, bool isSmallScreen) {
     return Column(
       children: [
         // Fitness Test Card - Destacado
@@ -446,9 +448,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           delay: 0.4,
           child: _buildFitnessTestCard(context),
         ),
-        
+
         SizedBox(height: isSmallScreen ? 10 : 14),
-        
+
         // Row de History y Settings
         _buildAnimatedEntrance(
           delay: 0.5,
@@ -460,7 +462,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   label: l10n.history,
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const HistoryScreenNew()),
+                    MaterialPageRoute(
+                        builder: (context) => const HistoryScreenNew()),
                   ),
                 ),
               ),
@@ -471,16 +474,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   label: l10n.settings,
                   onTap: () => Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const SettingsScreen()),
                   ),
                 ),
               ),
             ],
           ),
         ),
-        
+
         SizedBox(height: isSmallScreen ? 10 : 14),
-        
+
         // Personal Trainer Card
         _buildAnimatedEntrance(
           delay: 0.6,
@@ -618,7 +622,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
                 const ChatbotScreen(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
               return SlideTransition(
                 position: Tween<Offset>(
                   begin: const Offset(0, 1),
@@ -743,9 +748,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return AnimatedBuilder(
       animation: _entranceController,
       builder: (context, _) {
-        final progress = ((_entranceController.value - delay) / (1 - delay)).clamp(0.0, 1.0);
+        final progress =
+            ((_entranceController.value - delay) / (1 - delay)).clamp(0.0, 1.0);
         final curve = Curves.easeOutCubic.transform(progress);
-        
+
         return Opacity(
           opacity: curve,
           child: Transform.translate(
@@ -822,14 +828,16 @@ class _PremiumButtonState extends State<_PremiumButton>
               borderRadius: BorderRadius.circular(20),
               border: widget.borderColor != null
                   ? Border.all(
-                      color: widget.borderColor!.withOpacity(0.5 + _glow.value * 0.3),
+                      color: widget.borderColor!
+                          .withOpacity(0.5 + _glow.value * 0.3),
                       width: 1.5,
                     )
                   : null,
               boxShadow: widget.borderColor != null
                   ? [
                       BoxShadow(
-                        color: widget.borderColor!.withOpacity(0.2 + _glow.value * 0.2),
+                        color: widget.borderColor!
+                            .withOpacity(0.2 + _glow.value * 0.2),
                         blurRadius: 16 + _glow.value * 8,
                         spreadRadius: _glow.value * 2,
                       ),
@@ -862,12 +870,16 @@ class AuroraPainter extends CustomPainter {
     final wave1 = sin(animation * 2 * pi) * 40;
     path1.moveTo(0, size.height * 0.3 + wave1);
     path1.quadraticBezierTo(
-      size.width * 0.25, size.height * 0.2 + wave1 * 1.3,
-      size.width * 0.5, size.height * 0.35 + wave1,
+      size.width * 0.25,
+      size.height * 0.2 + wave1 * 1.3,
+      size.width * 0.5,
+      size.height * 0.35 + wave1,
     );
     path1.quadraticBezierTo(
-      size.width * 0.75, size.height * 0.5 + wave1 * 0.5,
-      size.width, size.height * 0.25 + wave1,
+      size.width * 0.75,
+      size.height * 0.5 + wave1 * 0.5,
+      size.width,
+      size.height * 0.25 + wave1,
     );
     path1.lineTo(size.width, 0);
     path1.lineTo(0, 0);
@@ -882,7 +894,7 @@ class AuroraPainter extends CustomPainter {
         Colors.transparent,
       ],
     ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-    
+
     canvas.drawPath(path1, paint);
 
     // Aurora 2 - Purple con olas
@@ -890,12 +902,16 @@ class AuroraPainter extends CustomPainter {
     final wave2 = sin((animation + 0.3) * 2 * pi) * 35;
     path2.moveTo(size.width, size.height * 0.4 + wave2);
     path2.quadraticBezierTo(
-      size.width * 0.7, size.height * 0.3 + wave2 * 1.2,
-      size.width * 0.4, size.height * 0.5 + wave2,
+      size.width * 0.7,
+      size.height * 0.3 + wave2 * 1.2,
+      size.width * 0.4,
+      size.height * 0.5 + wave2,
     );
     path2.quadraticBezierTo(
-      size.width * 0.2, size.height * 0.6 + wave2 * 0.8,
-      0, size.height * 0.35 + wave2,
+      size.width * 0.2,
+      size.height * 0.6 + wave2 * 0.8,
+      0,
+      size.height * 0.35 + wave2,
     );
     path2.lineTo(0, 0);
     path2.lineTo(size.width, 0);
@@ -910,26 +926,26 @@ class AuroraPainter extends CustomPainter {
         Colors.transparent,
       ],
     ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
-    
+
     canvas.drawPath(path2, paint);
   }
 
   @override
-  bool shouldRepaint(AuroraPainter oldDelegate) => 
+  bool shouldRepaint(AuroraPainter oldDelegate) =>
       (animation - oldDelegate.animation).abs() > 0.01;
 }
 
 /// Painter para partículas con profundidad 3D (optimizado)
 class DepthParticlesPainter extends CustomPainter {
   final double animation;
-  
+
   // Pre-calcular partículas para mejor rendimiento
   static final List<_ParticleData> _particles = _generateParticles();
-  
+
   static List<_ParticleData> _generateParticles() {
     final list = <_ParticleData>[];
     final random = Random(42);
-    
+
     // Partículas lejanas (25)
     for (int i = 0; i < 25; i++) {
       list.add(_ParticleData(
@@ -941,7 +957,7 @@ class DepthParticlesPainter extends CustomPainter {
         isCyan: i % 3 == 0,
       ));
     }
-    
+
     // Partículas medias (15)
     for (int i = 0; i < 15; i++) {
       list.add(_ParticleData(
@@ -953,7 +969,7 @@ class DepthParticlesPainter extends CustomPainter {
         isCyan: i % 2 == 0,
       ));
     }
-    
+
     // Partículas cercanas (8)
     for (int i = 0; i < 8; i++) {
       list.add(_ParticleData(
@@ -965,7 +981,7 @@ class DepthParticlesPainter extends CustomPainter {
         isCyan: i % 2 == 0,
       ));
     }
-    
+
     return list;
   }
 
@@ -980,10 +996,12 @@ class DepthParticlesPainter extends CustomPainter {
     for (final particle in _particles) {
       final offset = (animation * particle.speed) % 1.0;
       final x = size.width * particle.seedX;
-      final y = (size.height * particle.seedY + size.height * offset) % size.height;
+      final y =
+          (size.height * particle.seedY + size.height * offset) % size.height;
 
-      paint.color = (particle.isCyan ? AppColors.primaryCyan : AppColors.primaryPurple)
-          .withOpacity(particle.opacity);
+      paint.color =
+          (particle.isCyan ? AppColors.primaryCyan : AppColors.primaryPurple)
+              .withOpacity(particle.opacity);
 
       canvas.drawCircle(Offset(x, y), particle.size, paint);
     }

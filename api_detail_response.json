@@ -1,0 +1,46 @@
+﻿{
+    "id":  0,
+    "name":  "Barbell Curl",
+    "primary_muscles":  [
+                            "Biceps"
+                        ],
+    "category":  "Barbell",
+    "force":  "Pull",
+    "grips":  [
+                  "Underhand"
+              ],
+    "mechanic":  "Isolation",
+    "difficulty":  "Intermediate",
+    "steps":  [
+                  "While holding the upper arms stationary, curl the weights forward while contracting the biceps as you breathe out.",
+                  "Continue the movement until your biceps are fully contracted and the bar is at shoulder level.",
+                  "Hold the contracted position for a second and squeeze the biceps hard.",
+                  "Slowly bring the weight back down to the starting position."
+              ],
+    "videos":  [
+                   {
+                       "url":  "https://musclewiki-api.p.rapidapi.com/media/videos/branded/male-Barbell-barbell-curl-front.mp4",
+                       "angle":  "front",
+                       "gender":  "male",
+                       "og_image":  "https://musclewiki-api.p.rapidapi.com/media/images/og_images/og-male-Barbell-barbell-curl-front.jpg"
+                   },
+                   {
+                       "url":  "https://musclewiki-api.p.rapidapi.com/media/videos/branded/male-Barbell-barbell-curl-side.mp4",
+                       "angle":  "side",
+                       "gender":  "male",
+                       "og_image":  "https://musclewiki-api.p.rapidapi.com/media/images/og_images/og-male-Barbell-barbell-curl-side.jpg"
+                   },
+                   {
+                       "url":  "https://musclewiki-api.p.rapidapi.com/media/videos/branded/female-Barbell-barbell-curl-front.mp4",
+                       "angle":  "front",
+                       "gender":  "female",
+                       "og_image":  "https://musclewiki-api.p.rapidapi.com/media/images/og_images/og-female-Barbell-barbell-curl-front.jpg"
+                   },
+                   {
+                       "url":  "https://musclewiki-api.p.rapidapi.com/media/videos/branded/female-Barbell-barbell-curl-side.mp4",
+                       "angle":  "side",
+                       "gender":  "female",
+                       "og_image":  "https://musclewiki-api.p.rapidapi.com/media/images/og_images/og-female-Barbell-barbell-curl-side.jpg"
+                   }
+               ]
+}
