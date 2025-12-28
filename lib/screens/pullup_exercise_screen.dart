@@ -46,7 +46,7 @@ class _PullUpExerciseScreenState extends State<PullUpExerciseScreen>
   int _restTimeRemaining = 0;
 
   // Lista de series completadas para el historial
-  List<int> _completedSets = [];
+  final List<int> _completedSets = [];
   DateTime? _workoutStartTime;
 
   @override
@@ -997,7 +997,7 @@ class _PullUpExerciseScreenState extends State<PullUpExerciseScreen>
                     const SizedBox(height: 16),
                     _buildStatRow(
                         'Promedio por Serie',
-                        '${(totalReps / widget.workoutConfig.totalSets).toStringAsFixed(1)}',
+                        (totalReps / widget.workoutConfig.totalSets).toStringAsFixed(1),
                         Icons.trending_up),
                   ],
                 ),

@@ -353,7 +353,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fitnessTest => 'PRUEBA DE FITNESS';
 
   @override
-  String get fitnessTestCard => 'FITNESS TEST';
+  String get fitnessTestCard => 'TEST DE FITNESS';
+
+  @override
+  String get fitnessTestDetails => '3 ejercicios • 3 minutos';
 
   @override
   String get fitnessTestSubtitle => 'Evalúa tu nivel';
@@ -505,4 +508,62 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get abdominals => 'Abdominales';
+
+  @override
+  String get personalizedTraining => 'Entrenamiento Personalizado';
+
+  @override
+  String get personalizedTrainingDesc =>
+      'Encuentra ejercicios para músculos específicos';
+
+  @override
+  String get calibrateBar => 'CALIBRAR BARRA';
+
+  @override
+  String get alignLine => 'Alinea la línea cyan con tu barra';
+
+  @override
+  String get adjustBar => 'AJUSTAR BARRA';
+
+  @override
+  String get confirmPosition => 'CONFIRMAR POSICIÓN';
+
+  @override
+  String get adjustUp => 'SUBIR';
+
+  @override
+  String get adjustDown => 'BAJAR';
+
+  @override
+  String get recalibrateBar => 'Recalibrar barra';
+
+  @override
+  String get hangFromBar => 'Cuélgate de la barra';
+
+  @override
+  String get startTraining => 'COMENZAR ENTRENAMIENTO';
+
+  @override
+  String get continueToCalibration => 'CONTINUAR A CALIBRACIÓN';
+
+  @override
+  String get phaseUp => 'ARRIBA';
+
+  @override
+  String get phaseDown => 'ABAJO';
+
+  @override
+  String get phaseRising => 'SUBIENDO';
+
+  @override
+  String get phaseLowering => 'BAJANDO';
+
+  @override
+  String get phaseTransition => 'TRANSICIÓN';
+
+  @override
+  String get tempo => 'RITMO';
+
+  @override
+  String get form => 'FORMA';
 }

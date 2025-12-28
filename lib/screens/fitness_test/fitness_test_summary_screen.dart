@@ -5,7 +5,6 @@ import '../../utils/app_colors.dart';
 import '../../models/fitness_test/fitness_test_result.dart';
 import '../../models/fitness_test/fitness_level.dart';
 import '../../models/fitness_test/fitness_test_state.dart';
-import '../../services/fitness_test/fitness_level_calculator.dart';
 
 /// Pantalla de resumen y resultados del Fitness Test
 class FitnessTestSummaryScreen extends StatelessWidget {

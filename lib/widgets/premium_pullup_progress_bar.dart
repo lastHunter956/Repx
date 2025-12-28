@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../services/pullup_counter.dart';
 import '../utils/app_colors.dart';
+import 'package:REPX/l10n/app_localizations.dart';
 
 /// Barra diagonal premium que muestra el progreso del movimiento Pull-Up
 class PremiumPullUpProgressBar extends StatefulWidget {
@@ -77,7 +78,7 @@ class _PremiumPullUpProgressBarState extends State<PremiumPullUpProgressBar>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 320,
       height: 480,
       child: CustomPaint(
@@ -87,6 +88,7 @@ class _PremiumPullUpProgressBarState extends State<PremiumPullUpProgressBar>
           barHeight: widget.barHeight,
           pulseAnimation: _pulseAnimation,
           progressAnimation: _progressAnimation,
+          l10n: AppLocalizations.of(context)!,
         ),
       ),
     );
@@ -99,6 +101,7 @@ class PullUpProgressPainter extends CustomPainter {
   final double barHeight;
   final Animation<double> pulseAnimation;
   final Animation<double> progressAnimation;
+  final AppLocalizations l10n;
 
   PullUpProgressPainter({
     required this.counter,
@@ -106,6 +109,7 @@ class PullUpProgressPainter extends CustomPainter {
     required this.barHeight,
     required this.pulseAnimation,
     required this.progressAnimation,
+    required this.l10n,
   }) : super(repaint: Listenable.merge([pulseAnimation, progressAnimation]));
 
   @override
@@ -151,7 +155,7 @@ class PullUpProgressPainter extends CustomPainter {
 
   void _drawDiagonalTrack(Canvas canvas, Offset center, double radius) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.1)
+      ..color = Colors.white.withValues(alpha: 0.1)
       ..strokeWidth = 8
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -183,7 +187,7 @@ class PullUpProgressPainter extends CustomPainter {
         break;
     }
 
-    paint.color = progressColor.withOpacity(0.8);
+    paint.color = progressColor.withValues(alpha: 0.8);
 
     final rect =
         Rect.fromCenter(center: center, width: radius * 2, height: radius * 2);
@@ -240,7 +244,7 @@ class PullUpProgressPainter extends CustomPainter {
 
     // Efecto de pulso
     final pulsePaint = Paint()
-      ..color = AppColors.primaryCyan.withOpacity(0.3)
+      ..color = AppColors.primaryCyan.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(headPoint, 12 * pulseAnimation.value, pulsePaint);
@@ -255,7 +259,7 @@ class PullUpProgressPainter extends CustomPainter {
     _drawTimeBox(
       canvas,
       Offset(center.dx - radius - 60, center.dy - 40),
-      'ARRIBA',
+      l10n.phaseUp,
       upTime,
       AppColors.successGreen,
     );
@@ -264,7 +268,7 @@ class PullUpProgressPainter extends CustomPainter {
     _drawTimeBox(
       canvas,
       Offset(center.dx + radius + 20, center.dy + 20),
-      'ABAJO',
+      l10n.phaseDown,
       downTime,
       AppColors.primaryCyan,
     );
@@ -278,13 +282,13 @@ class PullUpProgressPainter extends CustomPainter {
     );
 
     final paint = Paint()
-      ..color = color.withOpacity(0.15)
+      ..color = color.withValues(alpha: 0.15)
       ..style = PaintingStyle.fill;
 
     canvas.drawRRect(rect, paint);
 
     final borderPaint = Paint()
-      ..color = color.withOpacity(0.4)
+      ..color = color.withValues(alpha: 0.4)
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 
@@ -366,11 +370,11 @@ class PullUpProgressPainter extends CustomPainter {
   String _getPhaseText(PullUpPhase phase) {
     switch (phase) {
       case PullUpPhase.up:
-        return '↑ SUBIENDO';
+        return '↑ ${l10n.phaseRising}';
       case PullUpPhase.down:
-        return '↓ BAJANDO';
+        return '↓ ${l10n.phaseLowering}';
       case PullUpPhase.transition:
-        return '~ TRANSICIÓN';
+        return '~ ${l10n.phaseTransition}';
     }
   }
 
@@ -393,4 +397,3 @@ class PullUpProgressPainter extends CustomPainter {
         oldDelegate.progressAnimation.value != progressAnimation.value;
   }
 }
-

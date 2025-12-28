@@ -1112,9 +1112,9 @@ class _ChatbotScreenState extends State<ChatbotScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildMacroItem('Calorías', '${analysis.macros!.calories}', 'kcal'),
-                    _buildMacroItem('Proteína', '${analysis.macros!.protein.toStringAsFixed(0)}', 'g'),
-                    _buildMacroItem('Carbos', '${analysis.macros!.carbs.toStringAsFixed(0)}', 'g'),
-                    _buildMacroItem('Grasa', '${analysis.macros!.fat.toStringAsFixed(0)}', 'g'),
+                    _buildMacroItem('Proteína', analysis.macros!.protein.toStringAsFixed(0), 'g'),
+                    _buildMacroItem('Carbos', analysis.macros!.carbs.toStringAsFixed(0), 'g'),
+                    _buildMacroItem('Grasa', analysis.macros!.fat.toStringAsFixed(0), 'g'),
                   ],
                 ),
               ],

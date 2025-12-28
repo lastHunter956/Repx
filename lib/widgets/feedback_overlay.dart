@@ -83,21 +83,21 @@ class FeedbackOverlay extends StatelessWidget {
 
   Color _getBackgroundColor() {
     if (message.contains('¡Perfecto') || message.contains('¡Bien')) {
-      return DrawingUtils.correctColor.withOpacity(0.9);
+      return DrawingUtils.correctColor.withValues(alpha: 0.9);
     } else if (errors.isNotEmpty) {
-      return DrawingUtils.errorColor.withOpacity(0.9);
+      return DrawingUtils.errorColor.withValues(alpha: 0.9);
     } else {
-      return DrawingUtils.accentColor.withOpacity(0.9);
+      return DrawingUtils.accentColor.withValues(alpha: 0.9);
     }
   }
 
   Color _getGlowColor() {
     if (message.contains('¡Perfecto') || message.contains('¡Bien')) {
-      return DrawingUtils.correctColor.withOpacity(0.5);
+      return DrawingUtils.correctColor.withValues(alpha: 0.5);
     } else if (errors.isNotEmpty) {
-      return DrawingUtils.errorColor.withOpacity(0.5);
+      return DrawingUtils.errorColor.withValues(alpha: 0.5);
     } else {
-      return DrawingUtils.accentColor.withOpacity(0.5);
+      return DrawingUtils.accentColor.withValues(alpha: 0.5);
     }
   }
 
@@ -111,4 +111,3 @@ class FeedbackOverlay extends StatelessWidget {
     }
   }
 }
-

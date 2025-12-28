@@ -785,8 +785,14 @@ abstract class AppLocalizations {
   /// No description provided for @fitnessTestCard.
   ///
   /// In es, this message translates to:
-  /// **'FITNESS TEST'**
+  /// **'TEST DE FITNESS'**
   String get fitnessTestCard;
+
+  /// No description provided for @fitnessTestDetails.
+  ///
+  /// In es, this message translates to:
+  /// **'3 ejercicios • 3 minutos'**
+  String get fitnessTestDetails;
 
   /// No description provided for @fitnessTestSubtitle.
   ///
@@ -1081,6 +1087,120 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Abdominales'**
   String get abdominals;
+
+  /// No description provided for @personalizedTraining.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrenamiento Personalizado'**
+  String get personalizedTraining;
+
+  /// No description provided for @personalizedTrainingDesc.
+  ///
+  /// In es, this message translates to:
+  /// **'Encuentra ejercicios para músculos específicos'**
+  String get personalizedTrainingDesc;
+
+  /// No description provided for @calibrateBar.
+  ///
+  /// In es, this message translates to:
+  /// **'CALIBRAR BARRA'**
+  String get calibrateBar;
+
+  /// No description provided for @alignLine.
+  ///
+  /// In es, this message translates to:
+  /// **'Alinea la línea cyan con tu barra'**
+  String get alignLine;
+
+  /// No description provided for @adjustBar.
+  ///
+  /// In es, this message translates to:
+  /// **'AJUSTAR BARRA'**
+  String get adjustBar;
+
+  /// No description provided for @confirmPosition.
+  ///
+  /// In es, this message translates to:
+  /// **'CONFIRMAR POSICIÓN'**
+  String get confirmPosition;
+
+  /// No description provided for @adjustUp.
+  ///
+  /// In es, this message translates to:
+  /// **'SUBIR'**
+  String get adjustUp;
+
+  /// No description provided for @adjustDown.
+  ///
+  /// In es, this message translates to:
+  /// **'BAJAR'**
+  String get adjustDown;
+
+  /// No description provided for @recalibrateBar.
+  ///
+  /// In es, this message translates to:
+  /// **'Recalibrar barra'**
+  String get recalibrateBar;
+
+  /// No description provided for @hangFromBar.
+  ///
+  /// In es, this message translates to:
+  /// **'Cuélgate de la barra'**
+  String get hangFromBar;
+
+  /// No description provided for @startTraining.
+  ///
+  /// In es, this message translates to:
+  /// **'COMENZAR ENTRENAMIENTO'**
+  String get startTraining;
+
+  /// No description provided for @continueToCalibration.
+  ///
+  /// In es, this message translates to:
+  /// **'CONTINUAR A CALIBRACIÓN'**
+  String get continueToCalibration;
+
+  /// No description provided for @phaseUp.
+  ///
+  /// In es, this message translates to:
+  /// **'ARRIBA'**
+  String get phaseUp;
+
+  /// No description provided for @phaseDown.
+  ///
+  /// In es, this message translates to:
+  /// **'ABAJO'**
+  String get phaseDown;
+
+  /// No description provided for @phaseRising.
+  ///
+  /// In es, this message translates to:
+  /// **'SUBIENDO'**
+  String get phaseRising;
+
+  /// No description provided for @phaseLowering.
+  ///
+  /// In es, this message translates to:
+  /// **'BAJANDO'**
+  String get phaseLowering;
+
+  /// No description provided for @phaseTransition.
+  ///
+  /// In es, this message translates to:
+  /// **'TRANSICIÓN'**
+  String get phaseTransition;
+
+  /// No description provided for @tempo.
+  ///
+  /// In es, this message translates to:
+  /// **'RITMO'**
+  String get tempo;
+
+  /// No description provided for @form.
+  ///
+  /// In es, this message translates to:
+  /// **'FORMA'**
+  String get form;
 }
 
 class _AppLocalizationsDelegate

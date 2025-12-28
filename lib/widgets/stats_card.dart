@@ -28,14 +28,14 @@ class StatsCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            (color ?? DrawingUtils.primaryColor).withOpacity(0.8),
-            (color ?? DrawingUtils.secondaryColor).withOpacity(0.6),
+            (color ?? DrawingUtils.primaryColor).withValues(alpha: 0.8),
+            (color ?? DrawingUtils.secondaryColor).withValues(alpha: 0.6),
           ],
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: (color ?? DrawingUtils.accentColor).withOpacity(0.3),
+            color: (color ?? DrawingUtils.accentColor).withValues(alpha: 0.3),
             blurRadius: 10,
             spreadRadius: 1,
           ),
@@ -203,4 +203,3 @@ class SessionHistoryCard extends StatelessWidget {
     }
   }
 }
-

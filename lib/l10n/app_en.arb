@@ -135,6 +135,7 @@
 
   "fitnessTest": "FITNESS TEST",
   "fitnessTestCard": "FITNESS TEST",
+  "fitnessTestDetails": "3 exercises • 3 minutes",
   "fitnessTestSubtitle": "Evaluate your level",
   "instructions": "Instructions",
   "instructionsDesc": "This test measures your fitness level in 3 minutes, evaluating 3 consecutive exercises with rest periods between each one.",
@@ -189,5 +190,25 @@
   "goodStatus": "Good",
   
   "squats": "Squats",
-  "abdominals": "Crunches"
+  "abdominals": "Crunches",
+  "personalizedTraining": "Personalized Training",
+  "personalizedTrainingDesc": "Find exercises for specific muscles",
+  
+  "calibrateBar": "CALIBRATE BAR",
+  "alignLine": "Align the cyan line with your bar",
+  "adjustBar": "ADJUST BAR",
+  "confirmPosition": "CONFIRM POSITION",
+  "adjustUp": "UP",
+  "adjustDown": "DOWN",
+  "recalibrateBar": "Recalibrate bar",
+  "hangFromBar": "Hang from the bar",
+  "startTraining": "START TRAINING",
+  "continueToCalibration": "CONTINUE TO CALIBRATION",
+  "phaseUp": "UP",
+  "phaseDown": "DOWN",
+  "phaseRising": "RISING",
+  "phaseLowering": "LOWERING",
+  "phaseTransition": "TRANSITION",
+  "tempo": "TEMPO",
+  "form": "FORM"
 }

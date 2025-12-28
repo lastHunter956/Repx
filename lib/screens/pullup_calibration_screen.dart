@@ -330,7 +330,7 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                         ),
                       ],
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
@@ -340,7 +340,7 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                         ),
                         SizedBox(width: 12),
                         Text(
-                          'CONTINUAR A CALIBRACIÓN',
+                          AppLocalizations.of(context)!.continueToCalibration,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -410,8 +410,8 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'CALIBRAR BARRA',
+                        Text(
+                          AppLocalizations.of(context)!.calibrateBar,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
@@ -422,8 +422,8 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                         const SizedBox(height: 4),
                         Text(
                           _isCalibrated
-                              ? '¡Listo para entrenar!'
-                              : 'Alinea la línea cyan con tu barra',
+                              ? AppLocalizations.of(context)!.systemReady
+                              : AppLocalizations.of(context)!.alignLine,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white.withOpacity(0.7),
@@ -464,13 +464,13 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                         _buildControlButton(
                           icon: Icons.keyboard_arrow_up_rounded,
                           onPressed: () => _updateBarPosition(-0.03),
-                          label: 'SUBIR',
+                          label: AppLocalizations.of(context)!.adjustUp,
                         ),
                         const SizedBox(width: 60),
                         _buildControlButton(
                           icon: Icons.keyboard_arrow_down_rounded,
                           onPressed: () => _updateBarPosition(0.03),
-                          label: 'BAJAR',
+                          label: AppLocalizations.of(context)!.adjustDown,
                         ),
                       ],
                     ),
@@ -491,9 +491,9 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                             width: 2,
                           ),
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
-                            'CONFIRMAR POSICIÓN',
+                            AppLocalizations.of(context)!.confirmPosition,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -580,7 +580,7 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                             ),
                           ],
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Icon(
@@ -590,7 +590,7 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                             ),
                             SizedBox(width: 12),
                             Text(
-                              'COMENZAR ENTRENAMIENTO',
+                              AppLocalizations.of(context)!.startTraining,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -613,7 +613,7 @@ class _PullUpCalibrationScreenState extends State<PullUpCalibrationScreen> {
                         });
                       },
                       child: Text(
-                        'Recalibrar barra',
+                        AppLocalizations.of(context)!.recalibrateBar,
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.6),
                           fontSize: 14,
@@ -942,4 +942,3 @@ class _BarCalibrationPainter extends CustomPainter {
         oldDelegate.isCalibrated != isCalibrated;
   }
 }
-

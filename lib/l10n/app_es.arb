@@ -134,7 +134,8 @@
   "durationLabel": "Duración",
 
   "fitnessTest": "PRUEBA DE FITNESS",
-  "fitnessTestCard": "FITNESS TEST",
+  "fitnessTestCard": "TEST DE FITNESS",
+  "fitnessTestDetails": "3 ejercicios • 3 minutos",
   "fitnessTestSubtitle": "Evalúa tu nivel",
   "instructions": "Instrucciones",
   "instructionsDesc": "Esta prueba mide tu nivel físico en 3 minutos, evaluando 3 ejercicios consecutivos con períodos de descanso entre cada uno.",
@@ -189,5 +190,25 @@
   "goodStatus": "Bien",
   
   "squats": "Sentadillas",
-  "abdominals": "Abdominales"
+  "abdominals": "Abdominales",
+  "personalizedTraining": "Entrenamiento Personalizado",
+  "personalizedTrainingDesc": "Encuentra ejercicios para músculos específicos",
+
+  "calibrateBar": "CALIBRAR BARRA",
+  "alignLine": "Alinea la línea cyan con tu barra",
+  "adjustBar": "AJUSTAR BARRA",
+  "confirmPosition": "CONFIRMAR POSICIÓN",
+  "adjustUp": "SUBIR",
+  "adjustDown": "BAJAR",
+  "recalibrateBar": "Recalibrar barra",
+  "hangFromBar": "Cuélgate de la barra",
+  "startTraining": "COMENZAR ENTRENAMIENTO",
+  "continueToCalibration": "CONTINUAR A CALIBRACIÓN",
+  "phaseUp": "ARRIBA",
+  "phaseDown": "ABAJO",
+  "phaseRising": "SUBIENDO",
+  "phaseLowering": "BAJANDO",
+  "phaseTransition": "TRANSICIÓN",
+  "tempo": "RITMO",
+  "form": "FORMA"
 }

@@ -247,8 +247,9 @@ class DrawingUtils {
     for (final keypoint in pose.keypoints) {
       // Solo mostrar articulaciones principales con confianza razonable
       if (!mainJoints.contains(keypoint.name)) continue;
-      if (keypoint.confidence < 0.25)
+      if (keypoint.confidence < 0.25) {
         continue; // Umbral adaptado: mostrará puntos con confianza moderada
+      }
 
       // 🎯 Transformación pixel-perfect
       final center = transformPoint(keypoint);

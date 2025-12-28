@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/drawing_utils.dart';
+import 'package:REPX/l10n/app_localizations.dart';
 
 /// Widget para mostrar el contador de repeticiones
 class CounterDisplay extends StatelessWidget {
@@ -25,7 +26,7 @@ class CounterDisplay extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
         boxShadow: [
           BoxShadow(
-            color: DrawingUtils.accentColor.withOpacity(0.3),
+            color: DrawingUtils.accentColor.withValues(alpha: 0.3),
             blurRadius: 20,
             spreadRadius: 2,
           ),
@@ -36,7 +37,7 @@ class CounterDisplay extends StatelessWidget {
         children: [
           // Indicador de fase
           Text(
-            phase.toUpperCase(),
+            _getLocalizedPhaseName(context, phase),
             style: TextStyle(
               color: _getPhaseColor(),
               fontSize: 18,
@@ -68,8 +69,8 @@ class CounterDisplay extends StatelessWidget {
           const SizedBox(height: 5),
 
           // Label
-          const Text(
-            'REPETICIONES',
+          Text(
+            AppLocalizations.of(context)!.repetitions,
             style: TextStyle(
               color: Colors.white70,
               fontSize: 14,
@@ -81,20 +82,20 @@ class CounterDisplay extends StatelessWidget {
           const SizedBox(height: 15),
 
           // Barra de calidad
-          _buildQualityIndicator(),
+          _buildQualityIndicator(context),
         ],
       ),
     );
   }
 
-  Widget _buildQualityIndicator() {
+  Widget _buildQualityIndicator(BuildContext context) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'CALIDAD',
+            Text(
+              AppLocalizations.of(context)!.formQuality,
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 12,
@@ -119,7 +120,7 @@ class CounterDisplay extends StatelessWidget {
               Container(
                 height: 12,
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -134,7 +135,7 @@ class CounterDisplay extends StatelessWidget {
                       BoxShadow(
                         color: DrawingUtils.getQualityColor(
                           formQuality,
-                        ).withOpacity(0.5),
+                        ).withValues(alpha: 0.5),
                         blurRadius: 8,
                       ),
                     ],
@@ -162,5 +163,19 @@ class CounterDisplay extends StatelessWidget {
         return Colors.white70;
     }
   }
-}
 
+  String _getLocalizedPhaseName(BuildContext context, String phase) {
+    if (!isActive) return phase.toUpperCase();
+    final l10n = AppLocalizations.of(context)!;
+    switch (phase.toUpperCase()) {
+      case 'ARRIBA':
+        return l10n.phaseUp;
+      case 'ABAJO':
+        return l10n.phaseDown;
+      case 'TRANSICIÓN':
+        return l10n.phaseTransition;
+      default:
+        return phase.toUpperCase();
+    }
+  }
+}
